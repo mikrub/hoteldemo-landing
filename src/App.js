@@ -19,6 +19,15 @@ const HotelLandingPage = () => {
   const [bookingUrl, setBookingUrl] = useState('');
 
   useEffect(() => {
+    // Cookiebot script
+    const cookiebotScript = document.createElement('script');
+    cookiebotScript.id = 'Cookiebot';
+    cookiebotScript.src = 'https://consent.cookiebot.com/uc.js';
+    cookiebotScript.setAttribute('data-cbid', '8b2eed2d-1720-4715-943d-257868958c55'); // Replace with your actual Cookiebot ID
+    cookiebotScript.setAttribute('data-blockingmode', 'auto');
+    cookiebotScript.async = true;
+    document.head.appendChild(cookiebotScript);
+    
     // Google Analytics tracking code
     const script1 = document.createElement('script');
     script1.async = true;
@@ -36,6 +45,7 @@ const HotelLandingPage = () => {
 
     // Cleanup function to remove scripts when component unmounts
     return () => {
+      document.head.removeChild(cookiebotScript);
       document.head.removeChild(script1);
       document.head.removeChild(script2);
     };
