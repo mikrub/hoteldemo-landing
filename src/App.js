@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
 import { Label } from "./components/ui/label"
 import { Input } from "./components/ui/input"
@@ -92,28 +92,7 @@ const HotelLandingPage = () => {
     });
   }, [formData.children]);
 
-  useEffect(() => {
-    // Update booking URL whenever form data changes
-    setBookingUrl(constructBookingUrl());
-  }, [formData, childrenAges, allParams]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleChildAgeChange = (index, value) => {
-    setChildrenAges(prevAges => {
-      const newAges = [...prevAges];
-      newAges[index] = value;
-      return newAges;
-    });
-  };
-
-  const constructBookingUrl = () => {
+  const constructBookingUrl = useCallback(() => {
     const bookingEngineBaseUrl = 'https://smartbooking.hotelnet.biz/home/main';
     
     // Construct the 'camere' parameter
@@ -141,6 +120,27 @@ const HotelLandingPage = () => {
     });
 
     return `${bookingEngineBaseUrl}?${urlParams.toString().replace(/%21/g, '!')}`;
+  }, [formData, childrenAges, allParams]);
+
+  useEffect(() => {
+    // Update booking URL whenever form data changes
+    setBookingUrl(constructBookingUrl());
+  }, [constructBookingUrl]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleChildAgeChange = (index, value) => {
+    setChildrenAges(prevAges => {
+      const newAges = [...prevAges];
+      newAges[index] = value;
+      return newAges;
+    });
   };
 
   const handleSubmit = (e) => {
