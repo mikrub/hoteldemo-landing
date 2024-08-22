@@ -41,37 +41,10 @@ const HotelLandingPage = () => {
     gtmNoscript.appendChild(gtmIframe);
     document.body.insertBefore(gtmNoscript, document.body.firstChild);
 
-    // Cookiebot script
-    const cookiebotScript = document.createElement('script');
-    cookiebotScript.id = 'Cookiebot';
-    cookiebotScript.src = 'https://consent.cookiebot.com/uc.js';
-    cookiebotScript.setAttribute('data-cbid', '8b2eed2d-1720-4715-943d-257868958c55');
-    cookiebotScript.setAttribute('data-blockingmode', 'auto');
-    cookiebotScript.async = true;
-    document.head.appendChild(cookiebotScript);
-    
-    // Google Analytics tracking code
-    const script1 = document.createElement('script');
-    script1.async = true;
-    script1.src = "https://www.googletagmanager.com/gtag/js?id=AW-16667572455";
-    document.head.appendChild(script1);
-
-    const script2 = document.createElement('script');
-    script2.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-16667572455');
-    `;
-    document.head.appendChild(script2);
-
     // Cleanup function to remove scripts when component unmounts
     return () => {
       document.head.removeChild(gtmScript);
       document.body.removeChild(gtmNoscript);
-      document.head.removeChild(cookiebotScript);
-      document.head.removeChild(script1);
-      document.head.removeChild(script2);
     };
   }, []);
 
