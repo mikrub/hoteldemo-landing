@@ -19,11 +19,33 @@ const HotelLandingPage = () => {
   const [bookingUrl, setBookingUrl] = useState('');
 
   useEffect(() => {
+    // Google Tag Manager script (head)
+    const gtmScript = document.createElement('script');
+    gtmScript.innerHTML = `
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-5N983T22');
+    `;
+    document.head.appendChild(gtmScript);
+
+    // Google Tag Manager noscript (body)
+    const gtmNoscript = document.createElement('noscript');
+    const gtmIframe = document.createElement('iframe');
+    gtmIframe.src = "https://www.googletagmanager.com/ns.html?id=GTM-5N983T22";
+    gtmIframe.height = "0";
+    gtmIframe.width = "0";
+    gtmIframe.style.display = "none";
+    gtmIframe.style.visibility = "hidden";
+    gtmNoscript.appendChild(gtmIframe);
+    document.body.insertBefore(gtmNoscript, document.body.firstChild);
+
     // Cookiebot script
     const cookiebotScript = document.createElement('script');
     cookiebotScript.id = 'Cookiebot';
     cookiebotScript.src = 'https://consent.cookiebot.com/uc.js';
-    cookiebotScript.setAttribute('data-cbid', '8b2eed2d-1720-4715-943d-257868958c55'); // Replace with your actual Cookiebot ID
+    cookiebotScript.setAttribute('data-cbid', '8b2eed2d-1720-4715-943d-257868958c55');
     cookiebotScript.setAttribute('data-blockingmode', 'auto');
     cookiebotScript.async = true;
     document.head.appendChild(cookiebotScript);
@@ -45,6 +67,8 @@ const HotelLandingPage = () => {
 
     // Cleanup function to remove scripts when component unmounts
     return () => {
+      document.head.removeChild(gtmScript);
+      document.body.removeChild(gtmNoscript);
       document.head.removeChild(cookiebotScript);
       document.head.removeChild(script1);
       document.head.removeChild(script2);
